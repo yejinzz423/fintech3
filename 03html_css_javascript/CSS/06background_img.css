@@ -161,7 +161,7 @@
     background-image: url(../img/car1.jpg);
     background-size: contain
 }
-#twoinone div:first-child {
+#twoinone div:last-child {
     background-image: url(../img/car2.jpg);
     background-size: contain
 }
