@@ -1,0 +1,55 @@
+/* 미디어쿼리 */
+/* 미디어쿼리 화면의 크기에 따라서 폰트크기나 이미지 사이즈
+   색상 등 다양한 CSS효과를 다르게 지정하는 것 */
+
+   html {
+    font-size: 80px;
+}
+
+article {
+    width: 40%;
+    height: 20%;
+    background-color: pink;
+    margin: 100px auto;
+}
+
+/* 화면 넓이가 900px 이하인 경우 */
+@media screen and (max-width: 900px) {
+    html {
+        font-size: 40px;
+    }
+
+    article {
+        background-color: orange;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1.2rem;
+    }
+
+}
+
+
+/* 화면 넓이가 900px 이하인 경우 */
+@media screen and (max-width: 400px) {
+    html {
+        font-size: 20px;
+    }
+
+    article {
+        background-color: aqua;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1.2rem;
+    }
+
+}

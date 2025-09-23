@@ -11,6 +11,45 @@
     <p>그리드 레이아웃은 웹페이지에서 2차원(행, 열)을 이용해 레이아웃을 설계하는 방식</p>
     <p>플렉스 보다 더 정교하고 쉽게 레이아웃 설계가 가능</p>
 
+    <div class="grid_container">
+    <div class="row">
+        <div class="attribute">행(raw):</div>
+        <div class="explain">그리드 레이아웃에서 가로줄을 의미</div>
+    </div>
+    <div class="row">
+        <div class="attribute">열(column):</div>
+        <div class="explain">그리드 레이아웃에서 세로줄을 의미</div>
+    </div>
+    <div class="row">
+        <div class="attribute">그리드 셀(grid cell):</div>
+        <div class="explain">행과 열이 만나 이루어지는 하나의 공간</div>
+    </div>
+    <div class="row">
+        <div class="attribute">그리드 갭(grid gap):</div>
+        <div class="explain">그리드 셀과 그리드 셀 사이의 간격</div>
+    </div>
+    <div class="row">
+        <div class="attribute">그리드 아이템(grid item):</div>
+        <div class="explain">그리드 셀 안에서 표현되는 콘텐츠</div>
+    </div>
+    <div class="row">
+        <div class="attribute">그리드 라인(grid line):</div>
+        <div class="explain">그리드 셀의 행과 열을 그리는 선</div>
+    </div>
+    <div class="row">
+        <div class="attribute">그리드 넘버(grid number):</div>
+        <div class="explain">그리드 라인에 붙는 번호</div>
+    </div>
+    <div class="row">
+        <div class="attribute">그리드 컨테이너(grid container):</div>
+        <div class="explain">그리드 레이아웃 전체 내용을 담고 있는 최상위 부모요소</div>
+    </div>
+</div>
+
+<hr>
+
+<h1>그리드 컨테이너 실습 1</h1>
+
     <div class="container">
         <div class="grid-item">item-1</div>
         <div class="grid-item">item-2</div>
@@ -21,6 +60,33 @@
         <div class="grid-item">item-7</div>
         <div class="grid-item">item-8</div>
         <div class="grid-item">item-9</div>
+        <!-- <div class="grid-item">item-10</div>
+        <div class="grid-item">item-11</div>
+        <div class="grid-item">item-12</div> -->
     </div>
+
+<hr>
+
+<h1>그리드 컨테이너 실습 2</h1>
+<p>그리드 속성을 이용해 위치 지정하기</p>
+     <div class="container2">
+        <div id="header" class="grid-item2">header</div>
+        <div id="sidebar" class="grid-item2">sidebar</div>
+        <div id="content" class="grid-item2">content</div>
+        <div id="footer" class="grid-item2">footer</div>
+     </div>
+
+
+<hr>
+
+<h1>그리드 컨테이너 실습 3</h1>
+<p>그리드 넘버를 이용해 위치 지정하기</p>
+     <div class="container3">
+        <div class="grid-item3">header</div>
+        <div class="grid-item3">sidebar</div>
+        <div class="grid-item3">content</div>
+        <div class="grid-item3">footer</div>
+     </div>
+
 </body>
 </html>
