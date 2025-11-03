@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import create_engine, text
 import pymysql
 pymysql.install_as_MySQLdb()
-load_dotenv(dotenv_path="./data/.env_db")
+load_dotenv()
 
 db_id = os.getenv("id")
 db_pw = os.getenv("pw")
