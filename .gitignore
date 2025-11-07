@@ -1,10 +1,12 @@
 .ipynb_checkpoints
-*cvs
+*.csv
 *json
-*xlsx
+*.xlsx
 .env
 .env*
 build/
 dist/
 *.spec
 *.exe
+*.tsv
+data/
