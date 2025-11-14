@@ -10,3 +10,4 @@ dist/
 *.exe
 *.tsv
 data/
+.autogluon_salary_model
