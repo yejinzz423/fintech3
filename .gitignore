@@ -11,3 +11,4 @@ dist/
 *.tsv
 data/
 .autogluon_salary_model
+.keras
