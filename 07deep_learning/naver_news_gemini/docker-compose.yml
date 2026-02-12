@@ -1,0 +1,13 @@
+services:
+  naver-news-gemini:
+    build: .
+    container_name: naver-news-gemini
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./:/app
+      - ./.env_gemini:/app/.env_gemini   # 로컬 env 파일을 컨테이너에서 읽도록 mount
+    restart: unless-stopped
+    environment:
+      PYTHONUNBUFFERED: "1"
+

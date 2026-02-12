@@ -1,0 +1,253 @@
+:root {
+  --primary: #2b6ea6;
+  --bg: #f3f6f9;
+  --line: #cfe2f3;
+  --text: #1f2937;
+  --subtext: #6b7280;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ======================
+   COMMON
+====================== */
+section {
+  padding: 64px 120px;
+}
+
+h1 {
+  font-size: 38px;
+  margin: 0;
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  border-left: 4px solid var(--primary);
+  padding-left: 12px;
+}
+
+h3 {
+  color: var(--primary);
+  margin: 6px 0;
+}
+
+p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--subtext);
+}
+
+strong {
+  color: var(--text);
+}
+
+/* ======================
+   HERO
+====================== */
+.hero-section {
+  background: var(--white);
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+}
+
+.hero img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.hero-copy {
+  font-size: 17px;
+  margin-top: 14px;
+}
+
+/* ======================
+   TIMELINE + SKILLS
+====================== */
+.timeline-skill-section {
+  display: grid;
+  grid-template-columns: 2.3fr 1fr;
+  gap: 36px;
+  background: #f3f8fd;
+}
+
+/* ---- TIMELINE ---- */
+.timeline-wrapper {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #dce3ea;
+}
+
+.timeline-line-wrapper {
+  margin-top: 28px;
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.timeline-row.top {
+  margin-bottom: 24px;
+}
+
+.timeline-row.bottom {
+  margin-top: 24px;
+}
+
+.timeline-box {
+  background: #f9fbfd;
+  border: 1px solid #dce3ea;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.timeline-line {
+  position: relative;
+  height: 4px;
+  background: var(--line);
+  border-radius: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timeline-line .dot {
+  width: 14px;
+  height: 14px;
+  background: var(--primary);
+  border-radius: 50%;
+  position: relative;
+  top: -5px;
+}
+
+/* ---- SKILLS (RADAR) ---- */
+.skills-wrapper {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #dce3ea;
+  text-align: center;
+}
+
+.radar {
+  width: 100%;
+  max-width: 220px;
+  margin: 12px auto 0;
+}
+
+.radar-bg {
+  fill: #eef4fa;
+  stroke: #cfe2f3;
+}
+
+.radar-data {
+  fill: rgba(43,110,166,0.35);
+  stroke: var(--primary);
+}
+
+.radar text {
+  font-size: 10px;
+  fill: #374151;
+}
+
+/* ======================
+   PROJECTS
+====================== */
+.projects-section {
+  background: #f5f7fa;
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.project {
+  background: var(--white);
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #dce3ea;
+}
+
+.project button {
+  margin-top: 14px;
+  width: 100%;
+  padding: 14px 0;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.project button:hover {
+  background: #1f4f78;
+}
+
+/* ======================
+   WHY / CONTACT
+====================== */
+.why-section {
+  background: var(--white);
+}
+
+.contact-section {
+  background: #0f3554;
+  color: #e5eef6;
+  padding: 56px 120px;
+}
+
+.contact-section h2 {
+  border-left-color: #ffffff;
+}
+
+.contact-section p {
+  color: #e5eef6;
+}
+
+/* ======================
+   MOBILE
+====================== */
+@media (max-width: 1023px) {
+  section {
+    padding: 40px 20px;
+  }
+
+  .timeline-skill-section {
+    grid-template-columns: 1fr;
+  }
+
+  .projects {
+    grid-template-columns: 1fr;
+  }
+
+  .hero img {
+    width: 120px;
+    height: 120px;
+  }
+}

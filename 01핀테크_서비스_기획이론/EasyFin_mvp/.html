@@ -1,0 +1,161 @@
+<!-- save as easyfin_prototype.html and open in browser -->
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>EasyFin Prototype</title>
+<!-- If you have your styles.css in same folder, it will be used; otherwise minimal styles are included below -->
+<link rel="stylesheet" href="styles.css" onerror="">
+<style>
+/* minimal fallback styles (used if no styles.css) */
+body{font-family:Arial, sans-serif; margin:0; background:#f7f7f8}
+.mobile-container{max-width:420px;margin:0 auto;background:#fff;min-height:100vh;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb}
+.appbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #eee}
+.screen__content{padding:12px}
+.card{background:#fff;border:1px solid #eee;padding:12px;margin-bottom:12px;border-radius:8px}
+.bottom-nav{display:flex;justify-content:space-around;padding:8px;border-top:1px solid #eee;position:sticky;bottom:0;background:#fff}
+.bottom-nav__item{background:none;border:0;padding:8px 6px;border-radius:6px}
+.bottom-nav__item--active{font-weight:700}
+.btn{padding:10px;border-radius:8px;border:0;background:#eee}
+.btn--primary{background:#1f2937;color:#fff}
+.input{padding:8px;border:1px solid #ddd;border-radius:6px;width:100%;margin-top:8px}
+.logo{font-size:20px;margin:0 0 6px 0}
+.chip{padding:6px 10px;border-radius:20px;border:1px solid #ddd;margin-right:6px;background:#fff}
+.chip--active{background:#1f2937;color:#fff;border-color:#1f2937}
+.market-list{list-style:none;padding:0;margin:0}
+.market-list__item{padding:10px;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.modal{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center}
+.modal__content{background:#fff;padding:16px;border-radius:8px;max-width:360px}
+.simple-list{list-style:none;padding-left:12px}
+.small{font-size:13px;color:#6b7280}
+</style>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+<div class="mobile-container"><div id="root"></div></div>
+
+<script type="text/babel">
+const {useState,useEffect} = React;
+
+/* AppBar + BottomNav (공통) */
+function AppBar({title, onBack}){ return (<header className="appbar"><div>{onBack ? <button onClick={onBack}>◀</button> : null} <strong>{title}</strong></div><div></div></header>); }
+function BottomNav({active, onChange}){ const items=["홈","마켓","라이브","커뮤니티","마이"]; return (<nav className="bottom-nav">{items.map(i=><button key={i} className={"bottom-nav__item"+(active===i?" bottom-nav__item--active":"")} onClick={()=>onChange(i)}>{i}</button>)}</nav>); }
+
+/* === Auth (온보딩/로그인/가입 — FR-001, FR-002, FR-003) === */
+function Auth({onLogin}){
+  const [tab,setTab]=useState('login'), [email,setEmail]=useState(''), [pw,setPw]=useState(''), [agree,setAgree]=useState(false);
+  function login(){ const users = JSON.parse(localStorage.getItem('mock_users')||'[{"email":"user@example.com","pw":"pass","nick":"예진"}]'); const u = users.find(x=>x.email===email && x.pw===pw); if(u){ localStorage.setItem('session', JSON.stringify({email:u.email, nick:u.nick})); onLogin(); } else alert('데모 계정: user@example.com / pass'); }
+  function signup(){ if(!agree){ alert('필수 약관 동의 필요'); return; } const users = JSON.parse(localStorage.getItem('mock_users')||'[]'); users.push({email, pw, nick: email.split('@')[0]}); localStorage.setItem('mock_users', JSON.stringify(users)); alert('가입 완료 — 로그인하세요'); setTab('login'); }
+  return (<div className="screen"><AppBar title="로그인/회원가입"/><div className="screen__content">
+    <h1 className="logo">EasyFin V2.0</h1>
+    <p className="small">Easy · Trust · Intelligence — 데모 프로토타입</p>
+    <div style={{marginTop:10}}>
+      <button className={"chip"+(tab==='login'?' chip--active':'')} onClick={()=>setTab('login')}>로그인</button>
+      <button className={"chip"+(tab==='signup'?' chip--active':'')} onClick={()=>setTab('signup')}>회원가입</button>
+    </div>
+    <section className="card">
+      <h3>{tab==='login'?'로그인':'회원가입'}</h3>
+      <input className="input" placeholder="이메일" value={email} onChange={e=>setEmail(e.target.value)}/>
+      <input className="input" placeholder="비밀번호" type="password" value={pw} onChange={e=>setPw(e.target.value)}/>
+      {tab==='signup' && <div style={{marginTop:8}}><label><input type="checkbox" checked={agree} onChange={e=>setAgree(e.target.checked)} style={{marginRight:6}}/> 필수 약관에 동의합니다.</label></div>}
+      <button className="btn btn--primary" style={{marginTop:10}} onClick={tab==='login'?login:signup}>{tab==='login'?'로그인':'가입'}</button>
+      <p className="small" style={{marginTop:8}}>데모 계정: user@example.com / pass</p>
+    </section>
+  </div></div>);
+}
+
+/* === Home (대시보드) === */
+function Home(){
+  const total = 123450000;
+  const breakdown = [{label:'예금',amount:35000000},{label:'주식',amount:48000000},{label:'ETF',amount:20000000},{label:'채권',amount:10000000},{label:'현금',amount:450000}];
+  const accounts = [{id:1,inst:'토스뱅크',name:'통합입출금',balance:12340000},{id:2,inst:'KB증권',name:'국내주식',balance:48000000}];
+  return (<div className="screen"><AppBar title="홈"/><div className="screen__content">
+    <section className="card"><h2>총 자산</h2><p style={{fontSize:20}}>{total.toLocaleString()} KRW</p>
+      <ul>{breakdown.map(b=> <li key={b.label}>{b.label}: {b.amount.toLocaleString()}</li>)}</ul></section>
+    <section className="card"><h2>계좌 요약</h2><ul className="simple-list">{accounts.map(a=><li key={a.id}><strong>{a.inst}</strong> / {a.name} — {a.balance.toLocaleString()} KRW</li>)}</ul></section>
+    <section className="card"><h2>AI 자산 요약(플레이스홀더)</h2><p className="small">향후 Intelligence 레이어: 총 자산 변동, 리스크 알림 등 제공 예정</p></section>
+  </div></div>);
+}
+
+/* === Market (FR-020, FR-021, FR-022 / UI-004) ===
+   참고: 마켓 와이어프레임을 반영해 구현했습니다. (참고 파일: wf_market.html) */
+function Market(){
+  const categories = ['전체','공모주','ETF','채권','리츠'];
+  const dummy = [
+    {id:1,name:'에코그린 공모주 청약',code:'IPO-2401',category:'공모주',risk:'중간',yield:12.4, desc:'친환경 에너지 기업 신규 상장 공모주.'},
+    {id:2,name:'KODEX 200 ETF',code:'ETF-200',category:'ETF',risk:'낮음',yield:4.8, desc:'KOSPI200 추종 ETF.'},
+    {id:3,name:'국채 10년',code:'BOND-10Y',category:'채권',risk:'낮음',yield:3.1, desc:'대한민국 국채 10년물.'}
+  ];
+  const [cat, setCat] = useState('전체');
+  const [selected, setSelected] = useState(null);
+  const list = cat==='전체'? dummy : dummy.filter(d=>d.category===cat);
+  return (<div className="screen"><AppBar title="마켓"/><div className="screen__content">
+    <div style={{marginBottom:10}}>{categories.map(c=> <button key={c} className={"chip"+(c===cat?' chip--active':'')} onClick={()=>setCat(c)} style={{marginRight:6}}>{c}</button>)}</div>
+    <section className="card"><h3>상품 리스트</h3><ul className="market-list">{list.map(it=>
+      <li key={it.id} className="market-list__item" onClick={()=>setSelected(it)}><div>{it.name}</div><div className="small">{it.code} · 위험도 {it.risk}</div></li>
+    )}</ul></section>
+    {selected && <div className="modal" onClick={()=>setSelected(null)}><div className="modal__content" onClick={e=>e.stopPropagation()}>
+      <h3>{selected.name}</h3><p class="small">{selected.code}</p><p style={{marginTop:8}}>{selected.desc}</p>
+      <p style={{marginTop:8}}>예상 수익률: <strong>{selected.yield}%</strong></p>
+      <p className="small">[AI 상품 설명 & 포트폴리오 영향 — 향후 연동 예정]</p>
+      <button className="btn" style={{marginTop:12}} onClick={()=>setSelected(null)}>닫기</button>
+    </div></div>}
+  </div></div>);
+}
+
+/* === Live (FR-030) === */
+function Live(){
+  const lives = [{id:1,title:'ETF 초심자 가이드', status:'진행중'},{id:2,title:'공모주 청약 팁', status:'예정'}];
+  return (<div className="screen"><AppBar title="라이브"/><div className="screen__content">
+    <section className="card"><h3>라이브 목록</h3><ul className="simple-list">{lives.map(l=><li key={l.id}>{l.title} — {l.status}</li>)}</ul></section>
+    <section className="card"><h3>라이브 캘린더(플레이스홀더)</h3><p className="small">향후 일정 선택/구독 기능 추가</p></section>
+  </div></div>);
+}
+
+/* === Community (FR-040 ~ FR-042) ===
+   게시글은 localStorage에 저장되어 간단한 CRUD(등록/표시)를 제공합니다. */
+function Community(){
+  const [posts, setPosts] = useState(()=> JSON.parse(localStorage.getItem('posts')||'[]'));
+  const [txt, setTxt] = useState('');
+  function add(){
+    if(!txt.trim()) return alert('내용을 입력하세요');
+    const p = {id:Date.now(), title: txt.slice(0,20), body: txt, time: new Date().toLocaleString()};
+    const next = [p, ...posts];
+    setPosts(next); localStorage.setItem('posts', JSON.stringify(next)); setTxt('');
+  }
+  return (<div className="screen"><AppBar title="커뮤니티"/><div className="screen__content">
+    <section className="card"><h3>글 작성</h3><input className="input" placeholder="내용을 입력하세요" value={txt} onChange={e=>setTxt(e.target.value)}/><button className="btn" onClick={add} style={{marginTop:8}}>등록</button></section>
+    <section className="card"><h3>게시글 목록</h3><ul className="simple-list">{posts.map(p=><li key={p.id}><strong>{p.title}</strong> <div className="small">{p.time}</div><div style={{marginTop:6}}>{p.body}</div><hr/></li>)}</ul></section>
+  </div></div>);
+}
+
+/* === My (FR-050 ~ FR-053) ===
+   참고: wf_my.html 의 구성과 매핑했습니다. (참고 파일: wf_my.html) */
+function My({onLogout}){
+  const sess = JSON.parse(localStorage.getItem('session')||'null');
+  const profile = sess? {nick: sess.nick, email: sess.email} : null;
+  const linked = ['토스뱅크','카카오뱅크','KB증권'];
+  const experts = ['@value_investor', '@ipo_hunter', '@etf_mom'];
+  return (<div className="screen"><AppBar title="마이"/><div className="screen__content">
+    <section className="card"><h3>프로필</h3>{profile? (<div><p><strong>{profile.nick}</strong></p><p>{profile.email}</p><button className="btn" onClick={()=>{localStorage.removeItem('session'); onLogout();}}>로그아웃</button></div>) : <p>로그인 필요</p>}</section>
+    <section className="card"><h3>연동된 금융사</h3><ul className="simple-list">{linked.map((l,i)=><li key={i}>{l}</li>)}</ul></section>
+    <section className="card"><h3>팔로우 전문가</h3><ul className="simple-list">{experts.map((e,i)=><li key={i}>{e}</li>)}</ul></section>
+  </div></div>);
+}
+
+/* === Root (라우팅 모사) === */
+function Root(){
+  const [route, setRoute] = useState(localStorage.getItem('route')||'홈');
+  const [logged, setLogged] = useState(!!localStorage.getItem('session'));
+  useEffect(()=> localStorage.setItem('route', route), [route]);
+  if(!logged) return <Auth onLogin={()=>setLogged(true)}/>;
+  return (<div style={{minHeight:'100vh',display:'flex',flexDirection:'column'}}><div style={{flex:1}}>
+    {route==='홈' && <Home/>}{route==='마켓' && <Market/>}{route==='라이브' && <Live/>}{route==='커뮤니티' && <Community/>}{route==='마이' && <My onLogout={()=>setLogged(false)}/>}
+  </div><BottomNav active={route} onChange={setRoute}/></div>);
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Root/>);
+</script>
+</body>
+</html>
